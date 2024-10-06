@@ -1,11 +1,11 @@
 {
   "name": "sabzlearn",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "github.com/bahinkor",
   "license": "MIT",
