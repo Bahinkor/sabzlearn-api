@@ -21,11 +21,6 @@ const schema = {
         max: 100,
         trim: true,
     },
-    phone: {
-        type: "string",
-        max: 11,
-        trim: true,
-    },
     password: {
         type: "string",
         min: 6,

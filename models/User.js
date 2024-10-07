@@ -24,13 +24,6 @@ const schema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 30,
-    },
-    phone: {
-        type: String,
-        required: true,
-        maxlength: 11,
     },
     role: {
         type: String,
