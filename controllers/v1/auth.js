@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("./../../models/User");
 const banUserModel = require("./../../models/BanUser");
 const registerValidator = require("./../../validators/register");
+const loginValidator = require("./../../validators/login");
 
 exports.register = async (req, res) => {
     const reqBody = req.body;
@@ -48,6 +49,37 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+    try {
+        const reqBody = req.body;
+        const validationResult = loginValidator(reqBody);
+        if (validationResult !== true) return res.status(422).json(validationResult);
+
+        const {identifier, password} = reqBody;
+
+        const user = await userModel.findOne({
+            $or: [{email: identifier.toLowerCase()}, {username: identifier.toLowerCase()}]
+        });
+        if (!user) return res.status(404).json({message: "user is not found"});
+
+        const isUserBanned = await banUserModel.findOne({email: user.email});
+        if (isUserBanned) return res.status(401).json({message: "user is banned"});
+
+        const isValidPassword = await bcrypt.compare(password, user.password);
+        if (!isValidPassword) return res.status(401).json({message: "identifier or password not valid"});
+
+        const accessToken = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
+            algorithm: "HS256",
+            expiresIn: "30 day",
+        });
+
+        return res.json({accessToken});
+
+    } catch (err) {
+        console.log(`login controller error => ${err}`);
+        return res.status(500).json({
+            message: "internal server error"
+        });
+    }
 };
 
 exports.getMe = async (req, res) => {
