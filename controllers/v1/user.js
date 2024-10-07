@@ -13,9 +13,11 @@ exports.banUser = async (req, res) => {
     }).lean();
     if (!user) return res.status(404).json({message: "user is not found"});
 
-    await banUserModel.create({
-        email: user.email
-    });
+    const {email} = user;
+    const isUserExist = await banUserModel.findOne({email}).lean();
+    if (isUserExist) return res.status(409).json({message: "The user is currently banned"});
+
+    await banUserModel.create({email});
 
     res.status(201).json({
         message: "user banned successfully"

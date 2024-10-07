@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userModel = require("./../../models/User");
+const banUserModel = require("./../../models/BanUser");
 const registerValidator = require("./../../validators/register");
 
 exports.register = async (req, res) => {
@@ -15,6 +16,9 @@ exports.register = async (req, res) => {
         $or: [{email: email.toLowerCase()}, {username: username.toLowerCase()}]
     });
     if (isUserExist) return res.status(409).json({message: "username or email already exists"});
+
+    const isUserBanned = await banUserModel.findOne({email}).lean();
+    if (isUserBanned) return res.status(401).json({message: "user is banned"});
 
     const countOfUsers = await userModel.countDocuments();
     const hashedPassword = await bcrypt.hashSync(password, 12);
