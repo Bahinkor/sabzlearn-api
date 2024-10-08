@@ -4,10 +4,14 @@ const authMiddleware = require("./../../middlewares/auth");
 const isAdminMiddleware = require("./../../middlewares/isAdmin");
 
 const userRouter = express.Router();
+userRouter.use(authMiddleware);
 
-userRouter.route("/").get(authMiddleware, isAdminMiddleware, userController.getAll);
-userRouter.route("/:id").delete(authMiddleware, isAdminMiddleware, userController.removeUser);
-userRouter.route("/ban/:id").post(authMiddleware, isAdminMiddleware, userController.banUser);
-userRouter.route("/role").put(authMiddleware, isAdminMiddleware, userController.changeRole);
+userRouter.route("/")
+    .get(isAdminMiddleware, userController.getAll)
+    .put(userController.updateUser);
+
+userRouter.route("/role").put(isAdminMiddleware, userController.changeRole);
+userRouter.route("/ban/:id").post(isAdminMiddleware, userController.banUser);
+userRouter.route("/:id").delete(isAdminMiddleware, userController.removeUser);
 
 module.exports = userRouter;

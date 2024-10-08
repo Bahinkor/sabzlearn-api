@@ -1,6 +1,7 @@
 const {isValidObjectId} = require("mongoose");
 const userModel = require("./../../models/User");
 const banUserModel = require("./../../models/BanUser");
+const updateUserValidator = require("../../validators/updateUser");
 
 exports.banUser = async (req, res) => {
     const {id} = req.params;
@@ -82,6 +83,30 @@ exports.changeRole = async (req, res) => {
 
     } catch (err) {
         console.log(`change role user controller error => ${err}`);
+        return res.status(500).json(err);
+    }
+};
+
+exports.updateUser = async (req, res) => {
+    try {
+        const reqBody = req.body;
+
+        const validationResult = updateUserValidator(reqBody);
+        if (validationResult !== true) return res.status(422).json(validationResult);
+
+        const {name, email, username} = reqBody;
+        const {_id} = req.user;
+
+        const updatedUser = await userModel.findOneAndUpdate({_id}, {
+            name,
+            username: username.toLowerCase(),
+            email: email.toLowerCase(),
+        }).select("-password -__v -createdAt -updatedAt").lean();
+
+        return res.json(updatedUser);
+
+    } catch (err) {
+        console.log(`user controller update user error => ${err}`);
         return res.status(500).json(err);
     }
 };

@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
 
     if (isAdmin) return next();
 
-    return res.status(401).json({
+    return res.status(403).json({
         message: "Not authorized"
     });
 };

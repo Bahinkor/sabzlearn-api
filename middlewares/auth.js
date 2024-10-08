@@ -18,6 +18,6 @@ module.exports = async (req, res, next) => {
 
     } catch (err) {
         console.log(`auth middleware err => ${err}`);
-        return res.status(403).json(err);
+        return res.status(401).json(err);
     }
 };
