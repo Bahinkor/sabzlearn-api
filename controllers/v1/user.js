@@ -23,3 +23,15 @@ exports.banUser = async (req, res) => {
         message: "user banned successfully"
     });
 };
+
+exports.getAll = async (req, res) => {
+    try {
+        const users = await userModel.find({}, "-password -__v").lean();
+
+        return res.json(users);
+
+    } catch (err) {
+        console.log(`get all user controller => ${err}`);
+        return res.status(500).json(err);
+    }
+};
