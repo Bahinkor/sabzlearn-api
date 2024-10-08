@@ -35,3 +35,22 @@ exports.getAll = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+exports.removeUser = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const isValidUserID = isValidObjectId(id);
+        if (!isValidUserID) return res.status(409).json({message: "invalid user ID"});
+
+        const removedUser = await userModel.findOneAndDelete({_id: id});
+        if (!removedUser) return res.status(404).json({message: "user not found"});
+
+        return res.json({
+            message: "user removed successfully"
+        });
+    } catch (err) {
+        console.log(`remove user controller error => ${err}`);
+        return res.status(500).json(err);
+    }
+};
