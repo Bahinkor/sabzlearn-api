@@ -54,3 +54,34 @@ exports.removeUser = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+exports.changeRole = async (req, res) => {
+    try {
+        const {id} = req.body;
+
+        const isValidUserID = isValidObjectId(id);
+        if (!isValidUserID) return res.status(409).json({message: "invalid user ID"});
+
+        const user = await userModel.findOne({_id: id}).lean();
+        if (!user) return res.status(404).json({message: "user not found"});
+
+        const isUserBanned = await banUserModel.findOne({email: user.email});
+        if (isUserBanned) return res.status(409).json({message: "this user is banned"});
+
+        const newRole = user.role === "ADMIN" ? "USER" : "ADMIN";
+
+        await userModel.findOneAndUpdate({
+            _id: id
+        }, {
+            role: newRole
+        });
+
+        return res.json({
+            message: "changed user role successfully"
+        });
+
+    } catch (err) {
+        console.log(`change role user controller error => ${err}`);
+        return res.status(500).json(err);
+    }
+};
