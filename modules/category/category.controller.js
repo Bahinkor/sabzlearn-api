@@ -1,5 +1,6 @@
 const categoryModel = require('./category.model');
 const categoryValidator = require('./category.validator');
+const {isValidObjectId} = require("mongoose");
 
 exports.create = async (req, res) => {
     try {
@@ -11,7 +12,7 @@ exports.create = async (req, res) => {
         const {title, href} = reqBody;
 
         const isCategoryExist = await categoryModel.findOne({href}).lean();
-        if (isCategoryExist) return res.status(409).json({message: "Category already exists"});
+        if (isCategoryExist) return res.status(409).json({message: "Category href already exists"});
 
         await categoryModel.create({
             title,
@@ -41,6 +42,23 @@ exports.getAll = async (req, res) => {
 };
 
 exports.remove = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const isValidCategoryID = isValidObjectId(id);
+        if (!isValidCategoryID) return res.status(409).json({message: "category id not valid"});
+
+        const removedCategory = await categoryModel.findOneAndDelete({_id: id});
+        if (!removedCategory) return res.status(404).json({message: "category not found"});
+
+        return res.json({
+            message: "category removed successfully"
+        });
+
+    } catch (err) {
+        console.log(`user controller remove err => ${err}`);
+        return res.status(500).json(err.message);
+    }
 };
 
 exports.update = async (req, res) => {
