@@ -1,7 +1,7 @@
 const {isValidObjectId} = require("mongoose");
-const userModel = require("./../../models/User");
-const banUserModel = require("./../../models/BanUser");
-const updateUserValidator = require("../../validators/updateUser");
+const userModel = require("../auth/User.model");
+const banUserModel = require("./BanUser.model");
+const updateUserValidator = require("./updateUser.validator");
 
 exports.banUser = async (req, res) => {
     const {id} = req.params;

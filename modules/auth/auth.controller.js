@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const userModel = require("./../../models/User");
-const banUserModel = require("./../../models/BanUser");
-const registerValidator = require("./../../validators/register");
-const loginValidator = require("./../../validators/login");
+const userModel = require("./User.model");
+const banUserModel = require("./../user/BanUser.model");
+const registerValidator = require("./register.validator");
+const loginValidator = require("./login.validator");
 
 exports.register = async (req, res) => {
     try {

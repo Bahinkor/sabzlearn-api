@@ -1,7 +1,7 @@
 const express = require("express");
-const userController = require("./../../controllers/v1/user");
-const authMiddleware = require("./../../middlewares/auth");
-const isAdminMiddleware = require("./../../middlewares/isAdmin");
+const userController = require("./user.controller");
+const authMiddleware = require("../../middlewares/auth.middleware");
+const isAdminMiddleware = require("../../middlewares/isAdmin.moddleware");
 
 const userRouter = express.Router();
 userRouter.use(authMiddleware);
