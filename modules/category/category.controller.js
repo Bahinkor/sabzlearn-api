@@ -1,4 +1,4 @@
-const categoryModel = require('./category.model');
+const categoryModel = require('./Category.model');
 const categoryValidator = require('./category.validator');
 const {isValidObjectId} = require("mongoose");
 
