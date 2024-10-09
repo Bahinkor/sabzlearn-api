@@ -18,4 +18,10 @@ app.use("/v1/auth", authRouter);
 app.use("/v1/users", userRouter);
 app.use("/v1/category", categoryRouter);
 
+app.use((req, res) => {
+    return res.status(404).json({
+        message: "Route Not Found"
+    });
+});
+
 module.exports = app;

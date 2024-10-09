@@ -91,6 +91,3 @@ exports.update = async (req, res) => {
         return res.status(500).json(err.message);
     }
 };
-
-exports.get = async (req, res) => {
-};
