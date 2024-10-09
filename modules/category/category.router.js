@@ -1,7 +1,7 @@
 const express = require("express");
 const categoryController = require("./category.controller");
 const authMiddleware = require("./../../middlewares/auth.middleware");
-const isAdminMiddleware = require("./../../middlewares/isAdmin.moddleware");
+const isAdminMiddleware = require("../../middlewares/isAdmin.middleware");
 
 const categoryRouter = express.Router();
 

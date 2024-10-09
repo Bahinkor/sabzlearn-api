@@ -1,7 +1,7 @@
 const express = require("express");
 const userController = require("./user.controller");
 const authMiddleware = require("../../middlewares/auth.middleware");
-const isAdminMiddleware = require("../../middlewares/isAdmin.moddleware");
+const isAdminMiddleware = require("../../middlewares/isAdmin.middleware");
 
 const userRouter = express.Router();
 userRouter.use(authMiddleware);

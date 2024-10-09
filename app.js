@@ -5,6 +5,7 @@ const cors = require("cors");
 const authRouter = require("./modules/auth/auth.router");
 const userRouter = require("./modules/user/user.router");
 const categoryRouter = require("./modules/category/category.router");
+const courseRouter = require("./modules/course/course.router");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(helmet());
 app.use("/v1/auth", authRouter);
 app.use("/v1/users", userRouter);
 app.use("/v1/category", categoryRouter);
+app.use("/v1/courses", courseRouter);
 
 app.use((req, res) => {
     return res.status(404).json({

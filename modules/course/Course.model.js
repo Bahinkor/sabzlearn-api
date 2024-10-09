@@ -23,19 +23,16 @@ const schema = new mongoose.Schema({
         unique: true,
     },
     price: {
-        type: Number,
+        type: String,
         required: true,
-        min: 0,
     },
     status: {
         type: String,
         required: true,
     },
     discount: {
-        type: Number,
+        type: String,
         required: true,
-        min: 0,
-        default: 0,
     },
     categoryID: {
         type: mongoose.Types.ObjectId,
