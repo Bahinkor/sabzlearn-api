@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const authRouter = require("./modules/auth/auth.route");
 const userRouter = require("./modules/user/user.route");
+const categoryRouter = require("./modules/category/category.router");
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.use(helmet());
 
 app.use("/v1/auth", authRouter);
 app.use("/v1/users", userRouter);
+app.use("/v1/category", categoryRouter);
 
 module.exports = app;
