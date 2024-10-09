@@ -62,6 +62,34 @@ exports.remove = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const isValidCategoryID = isValidObjectId(id);
+        if (!isValidCategoryID) return res.status(409).json({message: "category id not valid"});
+
+        const validationResultReqBody = categoryValidator(req.body);
+        if (validationResultReqBody !== true) return res.status(422).json(validationResultReqBody);
+
+        const {title, href} = req.body;
+
+        const category = await categoryModel.findOneAndUpdate({
+            _id: id,
+        }, {
+            title,
+            href,
+        });
+
+        if (!category) return res.status(404).json({message: "category not found"});
+
+        return res.json({
+            message: "category updated successfully"
+        });
+
+    } catch (err) {
+        console.log(`user controller update err => ${err}`);
+        return res.status(500).json(err.message);
+    }
 };
 
 exports.get = async (req, res) => {
