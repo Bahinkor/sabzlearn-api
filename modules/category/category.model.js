@@ -4,10 +4,13 @@ const schema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
+        minlength: 3,
     },
     href: {
         type: String,
         required: true,
+        unique: true,
+        minlength: 3,
     },
 }, {timestamps: true});
 
