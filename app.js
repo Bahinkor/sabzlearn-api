@@ -26,4 +26,11 @@ app.use((req, res) => {
     });
 });
 
+courseRouter.use((err, req, res, next) => {
+    return res.status(500).json({
+        statusCode: err.status || "Uncertain",
+        message: err.message || "internal server error"
+    });
+});
+
 module.exports = app;

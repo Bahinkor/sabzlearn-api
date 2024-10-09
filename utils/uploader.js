@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
         const ext = path.extname(file.originalname);
 
         const validFormats = [".jpg", ".jpeg", ".png", ".webp"];
-        if (!validFormats.includes(ext)) return cb(new Error("Invalid formats"));
+        if (!validFormats.includes(ext)) return cb(new Error("Invalid image format"));
 
         cb(null, fileName + ext);
     },
