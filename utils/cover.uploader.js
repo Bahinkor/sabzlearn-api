@@ -16,11 +16,11 @@ const storage = multer.diskStorage({
     },
 });
 
-const uploader = multer({
+const coverUploader = multer({
     storage,
     limits: {
         fileSize: 3 * 1024 * 1024,
     },
 });
 
-module.exports = uploader;
+module.exports = coverUploader;

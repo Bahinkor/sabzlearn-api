@@ -6,6 +6,7 @@ const authRouter = require("./modules/auth/auth.router");
 const userRouter = require("./modules/user/user.router");
 const categoryRouter = require("./modules/category/category.router");
 const courseRouter = require("./modules/course/course.router");
+const sessionRouter = require("./modules/session/session.router");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/v1/auth", authRouter);
 app.use("/v1/users", userRouter);
 app.use("/v1/category", categoryRouter);
 app.use("/v1/courses", courseRouter);
+app.use("/v1/session", sessionRouter);
 
 app.use((req, res) => {
     return res.status(404).json({
@@ -26,7 +28,7 @@ app.use((req, res) => {
     });
 });
 
-courseRouter.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
     return res.status(500).json({
         statusCode: err.status || "Uncertain",
         message: err.message || "internal server error"
