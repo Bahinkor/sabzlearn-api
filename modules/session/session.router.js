@@ -12,4 +12,7 @@ sessionRouter.route("/")
 sessionRouter.route("/:id")
     .post(authMiddleware, isAdminMiddleware, multerVideoUploader.single("video"), sessionController.createSession);
 
+sessionRouter.route("/:courseHref/:sessionID")
+    .get(sessionController.getSessionInfos);
+
 module.exports = sessionRouter;

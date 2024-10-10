@@ -49,3 +49,29 @@ exports.getAll = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+exports.getSessionInfos = async (req, res) => {
+    try {
+        const {courseHref, sessionID} = req.params;
+
+        const course = await courseModel.findOne({href: courseHref}).lean();
+        if (!course) return res.status(404).json({message: "course not found"});
+
+        const isValidSessionID = isValidObjectId(sessionID);
+        if (!isValidSessionID) return res.status(409).json({message: "session id not valid"});
+
+        const session = await sessionModel.findOne({_id: sessionID}).populate("course", "title").lean();
+        if (!session) return res.status(404).json({message: "session not found"});
+
+        const allSessions = await sessionModel.find({course: course._id}).lean();
+
+        return res.json({
+            ...session,
+            allSessions,
+        });
+
+    } catch (err) {
+        console.log(`session controller get Session Infos err => ${err}`);
+        return res.status(500).json(err);
+    }
+};
