@@ -37,3 +37,15 @@ exports.createSession = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+exports.getAll = async (req, res) => {
+    try {
+        const sessions = await sessionModel.find({}, "-__v").populate("course", "title").lean();
+
+        return res.json(sessions);
+
+    } catch (err) {
+        console.log(`session controller getAll err => ${err}`);
+        return res.status(500).json(err);
+    }
+};
