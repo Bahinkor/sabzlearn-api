@@ -75,3 +75,28 @@ exports.getSessionInfos = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+exports.removeSession = async (req, res) => {
+    try {
+        const {courseHref, sessionID} = req.params;
+
+        const course = await courseModel.findOne({href: courseHref});
+        if (!course) return res.status(404).json({message: "course not found"});
+
+        const isValidSessionID = isValidObjectId(sessionID);
+        if (!isValidSessionID) return res.status(409).json({message: "session id not valid"});
+
+        if (!course.teacher.equals(req.user._id)) return res.status(403).json({message: "your not access this course"});
+
+        const removedSession = await sessionModel.findOneAndDelete({_id: sessionID});
+        if (!removedSession) return res.status(404).json({message: "session not found"});
+
+        return res.json({
+            message: "session removed successfully"
+        });
+
+    } catch (err) {
+        console.log(`session controller remove err => ${err}`);
+        return res.status(500).json(err);
+    }
+};

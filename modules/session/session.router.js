@@ -13,6 +13,7 @@ sessionRouter.route("/:id")
     .post(authMiddleware, isAdminMiddleware, multerVideoUploader.single("video"), sessionController.createSession);
 
 sessionRouter.route("/:courseHref/:sessionID")
-    .get(sessionController.getSessionInfos);
+    .get(sessionController.getSessionInfos)
+    .delete(authMiddleware, isAdminMiddleware, sessionController.removeSession);
 
 module.exports = sessionRouter;
