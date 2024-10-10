@@ -27,7 +27,6 @@ const schema = new mongoose.Schema({
     },
     inAnswer: {
         type: Boolean,
-        required: true,
         default: false,
     },
     mainCommentID: {

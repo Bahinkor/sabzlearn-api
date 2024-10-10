@@ -58,6 +58,6 @@ schema.virtual("Comment", {
     foreignField: "course",
 });
 
-const model = mongoose.model("Course", schema);
+const model = mongoose.models.Course || mongoose.model("Course", schema);
 
 module.exports = model;
