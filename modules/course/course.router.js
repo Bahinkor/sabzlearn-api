@@ -13,6 +13,9 @@ courseRouter.route("/:href")
     .get(authMiddleware, courseController.getOne)
     .delete(authMiddleware, isAdminMiddleware, courseController.remove);
 
+courseRouter.route("/related/:href")
+    .get(courseController.getRelated);
+
 courseRouter.route("/category/:href")
     .get(courseController.getByCategory);
 

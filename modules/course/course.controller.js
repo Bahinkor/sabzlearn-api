@@ -107,6 +107,28 @@ exports.getByCategory = async (req, res) => {
     }
 };
 
+exports.getRelated = async (req, res) => {
+    try {
+        const {href} = req.params;
+
+        const course = await courseModel.findOne({href});
+        if (!course) return res.status(404).json({message: "course not found"});
+
+        const relatedCourse = await courseModel.find({
+            categoryID: course.categoryID,
+            _id: {
+                $ne: course._id
+            }
+        }).lean();
+
+        return res.json(relatedCourse);
+
+    } catch (err) {
+        console.log(`course controller get related error => ${err}`);
+        return res.status(500).json(err);
+    }
+};
+
 exports.remove = async (req, res) => {
     try {
         const {href} = req.params;
