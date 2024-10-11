@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
     const bearerToken = req.header("Authorization");
     const bearerArray = bearerToken?.split(" ");
 
-    if (bearerArray?.length !== 2) return res.status(403).send("Not authorized");
+    if (bearerArray?.length !== 2) return res.status(403).json({message: "Not authorized"});
 
     const accessToken = bearerArray[1];
 

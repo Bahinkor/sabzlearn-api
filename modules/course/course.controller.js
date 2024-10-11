@@ -69,11 +69,17 @@ exports.getOne = async (req, res) => {
             course: course._id,
             isAccept: true
         }).populate("creator", "name").sort("-1").limit(10).lean();
+
         const studentsCount = await userCourseModel.find({course: course._id}).countDocuments();
+        const isUserRegister = !!(await userCourseModel.findOne({
+            user: req.user._id,
+            course: course._id,
+        }));
 
         return res.json({
             ...course,
             studentsCount,
+            isUserRegister,
             sessions,
             comments,
         });
