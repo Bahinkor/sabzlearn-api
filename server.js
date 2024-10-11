@@ -1,6 +1,8 @@
 const app = require("./app.js");
 const mongoose = require("mongoose");
-require("dotenv").config();
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const port = process.env.PORT;
 
