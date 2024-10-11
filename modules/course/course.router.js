@@ -10,7 +10,8 @@ courseRouter.route("/")
     .post(authMiddleware, isAdminMiddleware, multerCoverUploader.single("cover"), courseController.createCourse);
 
 courseRouter.route("/:href")
-    .get(authMiddleware, courseController.getOne);
+    .get(authMiddleware, courseController.getOne)
+    .delete(authMiddleware, isAdminMiddleware, courseController.remove);
 
 courseRouter.route("/category/:href")
     .get(courseController.getByCategory);

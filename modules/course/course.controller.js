@@ -106,3 +106,26 @@ exports.getByCategory = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+exports.remove = async (req, res) => {
+    try {
+        const {href} = req.params;
+
+        const course = await courseModel.findOne({href});
+        if (!course) return res.status(404).json({message: "course not found"});
+
+        const {_id: userID} = req.user;
+        const teacherID = course.teacher;
+        if (!userID.equals(teacherID)) return res.status(403).json({message: "your not access this course"});
+
+        await courseModel.findOneAndDelete({href});
+
+        return res.json({
+            message: "course removed successfully",
+        });
+
+    } catch (err) {
+        console.log(`course controller remove err => ${err}`);
+        return res.status(500).json(err);
+    }
+};
