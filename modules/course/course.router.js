@@ -10,4 +10,7 @@ const courseRouter = express.Router();
 courseRouter.route("/")
     .post(authMiddleware, isAdminMiddleware, multerCoverUploader.single("cover"), courseController.createCourse);
 
+courseRouter.route("/category/:href")
+    .get(courseController.getByCategory);
+
 module.exports = courseRouter;

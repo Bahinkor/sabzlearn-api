@@ -51,3 +51,20 @@ exports.createCourse = async (req, res) => {
         return res.status(500).json({err});
     }
 };
+
+exports.getByCategory = async (req, res) => {
+    try {
+        const {href} = req.params;
+
+        const category = await categoryModel.findOne({href});
+        if (!category) return res.status(404).json({message: "category not found"});
+
+        const courses = await courseModel.find({categoryID: category._id}).lean();
+
+        return res.json(courses);
+
+    } catch (err) {
+        console.log(`course controller get by category err => ${err}`);
+        return res.status(500).json(err);
+    }
+};
