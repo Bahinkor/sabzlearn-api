@@ -35,6 +35,6 @@ const schema = new mongoose.Schema({
     },
 }, {timestamps: true});
 
-const model = mongoose.model("Comment", schema);
+const model = mongoose.models.Comment || mongoose.model("Comment", schema);
 
 module.exports = model;

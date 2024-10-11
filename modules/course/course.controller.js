@@ -1,6 +1,9 @@
 const {isValidObjectId} = require("mongoose");
 const courseModel = require("./Course.model");
 const categoryModel = require("./../category/Category.model");
+const sessionModel = require("./../session/Session.model");
+const commentModel = require("./../comment/Comment.model");
+const userCourseModel = require("./../userCourse/UserCourse.model");
 const courseValidator = require("./course.validator");
 
 exports.createCourse = async (req, res) => {
@@ -49,6 +52,35 @@ exports.createCourse = async (req, res) => {
     } catch (err) {
         console.log(`create course controller error => ${err}`);
         return res.status(500).json({err});
+    }
+};
+
+exports.getOne = async (req, res) => {
+    try {
+        const {href} = req.params;
+
+        const course = await courseModel.findOne({href})
+            .populate("categoryID").populate("teacher", "name").lean();
+
+        if (!course) return res.status(404).json({message: "course not found"});
+
+        const sessions = await sessionModel.find({course: course._id}).lean();
+        const comments = await commentModel.find({
+            course: course._id,
+            isAccept: true
+        }).populate("creator", "name").sort("-1").limit(10).lean();
+        const studentsCount = await userCourseModel.find({course: course._id}).countDocuments();
+
+        return res.json({
+            ...course,
+            studentsCount,
+            sessions,
+            comments,
+        });
+
+    } catch (err) {
+        console.log(`get one, course controller error => ${err}`);
+        return res.status(500).json(err);
     }
 };
 
