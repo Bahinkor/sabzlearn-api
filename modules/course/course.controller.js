@@ -68,7 +68,10 @@ exports.getOne = async (req, res) => {
         const comments = await commentModel.find({
             course: course._id,
             isAccept: true
-        }).populate("creator", "name").sort("-1").limit(10).lean();
+        }).populate("creator", "name").populate({
+            path: "replays",
+            populate: {path: "creator", select: "name"},
+        }).sort("-1").limit(10).lean();
 
         const studentsCount = await userCourseModel.find({course: course._id}).countDocuments();
         const isUserRegister = !!(await userCourseModel.findOne({

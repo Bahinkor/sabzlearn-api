@@ -15,24 +15,8 @@ const schema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    isAccept: {
-        type: Boolean,
-        default: false,
-    },
-    score: {
-        type: Number,
-        default: 5,
-        min: 1,
-        max: 5,
-    },
-    replays: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: "Replay",
-        }
-    ],
 }, {timestamps: true});
 
-const model = mongoose.models.Comment || mongoose.model("Comment", schema);
+const model = mongoose.models.Replay || mongoose.model("Replay", schema);
 
 module.exports = model;
