@@ -55,7 +55,7 @@ exports.accept = async (req, res) => {
         const {id} = req.params;
 
         const isValidCommentID = isValidObjectId(id);
-        if (!isValidCommentID) return res.status(404).json({message: "invalid commentID"});
+        if (!isValidCommentID) return res.status(422).json({message: "invalid commentID"});
 
         const acceptedComment = await commentModel.findOneAndUpdate({
             _id: id
@@ -80,7 +80,7 @@ exports.reject = async (req, res) => {
         const {id} = req.params;
 
         const isValidCommentID = isValidObjectId(id);
-        if (!isValidCommentID) return res.status(404).json({message: "invalid commentID"});
+        if (!isValidCommentID) return res.status(422).json({message: "invalid commentID"});
 
         const rejectedComment = await commentModel.findOneAndUpdate({
             _id: id
@@ -96,6 +96,41 @@ exports.reject = async (req, res) => {
 
     } catch (err) {
         console.log(`comment controller, reject err => ${err}`);
+        return res.status(500).json(err);
+    }
+};
+
+exports.answer = async (req, res) => {
+    try {
+        const {body} = req.body;
+        const {id} = req.params;
+
+        const isValidCommentID = isValidObjectId(id);
+        if (!isValidCommentID) return res.status(422).json({message: "invalid commentID"});
+
+        const acceptedComment = await commentModel.findOneAndUpdate({
+            _id: id
+        }, {
+            isAccept: true,
+        });
+
+        if (!acceptedComment) return res.status(404).json({message: "comment not found"});
+
+        await commentModel.create({
+            body,
+            course: acceptedComment.course,
+            creator: req.user._id,
+            isAccept: true,
+            inAnswer: true,
+            mainCommentID: acceptedComment._id,
+        });
+
+        return res.status(201).json({
+            message: "answer successfully"
+        });
+
+    } catch (err) {
+        console.log(`comment controller answer err => ${err}`);
         return res.status(500).json(err);
     }
 };
