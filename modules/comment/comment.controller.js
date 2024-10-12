@@ -49,3 +49,53 @@ exports.remove = async (req, res) => {
         return res.status(500).json(err);
     }
 };
+
+exports.accept = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const isValidCommentID = isValidObjectId(id);
+        if (!isValidCommentID) return res.status(404).json({message: "invalid commentID"});
+
+        const acceptedComment = await commentModel.findOneAndUpdate({
+            _id: id
+        }, {
+            isAccept: true,
+        });
+
+        if (!acceptedComment) return res.status(404).json({message: "comment not found"});
+
+        return res.json({
+            message: "comment accepted"
+        });
+
+    } catch (err) {
+        console.log(`comment controller, accept err => ${err}`);
+        return res.status(500).json(err);
+    }
+};
+
+exports.reject = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const isValidCommentID = isValidObjectId(id);
+        if (!isValidCommentID) return res.status(404).json({message: "invalid commentID"});
+
+        const rejectedComment = await commentModel.findOneAndUpdate({
+            _id: id
+        }, {
+            isAccept: false,
+        });
+
+        if (!rejectedComment) return res.status(404).json({message: "comment not found"});
+
+        return res.json({
+            message: "comment rejected"
+        });
+
+    } catch (err) {
+        console.log(`comment controller, reject err => ${err}`);
+        return res.status(500).json(err);
+    }
+};

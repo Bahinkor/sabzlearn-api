@@ -11,4 +11,10 @@ commentRouter.route("/")
 commentRouter.route("/:id")
     .delete(authMiddleware, isAdminMiddleware, commentController.remove);
 
+commentRouter.route("/:id/accept")
+    .put(authMiddleware, isAdminMiddleware, commentController.accept);
+
+commentRouter.route("/:id/reject")
+    .put(authMiddleware, isAdminMiddleware, commentController.reject);
+
 module.exports = commentRouter;
