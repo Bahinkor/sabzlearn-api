@@ -6,7 +6,8 @@ const isAdminMiddleware = require("./../../middlewares/isAdmin.middleware");
 const commentRouter = express.Router();
 
 commentRouter.route("/")
-    .post(authMiddleware, commentController.create);
+    .post(authMiddleware, commentController.create)
+    .get(authMiddleware, isAdminMiddleware, commentController.getAll);
 
 commentRouter.route("/:id")
     .delete(authMiddleware, isAdminMiddleware, commentController.remove);

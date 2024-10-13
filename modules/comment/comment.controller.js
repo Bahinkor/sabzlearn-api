@@ -30,6 +30,19 @@ exports.create = async (req, res) => {
     }
 };
 
+exports.getAll = async (req, res) => {
+    try {
+        const comments = await commentModel.find({})
+            .populate("course").populate("creator", "-password").lean();
+
+        return res.json(comments);
+
+    } catch (err) {
+        console.log(`comment controller, get all comments error => ${err}`);
+        return res.status(500).json(err);
+    }
+};
+
 exports.remove = async (req, res) => {
     try {
         const {id} = req.params;
