@@ -1,3 +1,4 @@
+const {isValidObjectId} = require("mongoose");
 const contactModel = require("./Contact.model");
 const contactValidator = require("./contact.validator");
 
@@ -37,6 +38,23 @@ exports.create = async (req, res) => {
 };
 
 exports.remove = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const isValidContactID = isValidObjectId(id);
+        if (!isValidContactID) return res.status(422).json({message: "invalid contactID"});
+
+        const deletedContact = await contactModel.findOneAndDelete({_id: id});
+        if (!deletedContact) return res.status(404).json({message: "contact not found"});
+
+        return res.json({
+            message: "Contact removed successfully"
+        });
+
+    } catch (err) {
+        console.log(`contact controller, remove error => ${err}`);
+        return res.status(500).json(err);
+    }
 };
 
 exports.answer = async (req, res) => {
