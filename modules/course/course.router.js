@@ -12,6 +12,9 @@ courseRouter.route("/")
 courseRouter.route("/popular")
     .get(courseController.getPopular);
 
+courseRouter.route("/presale")
+    .get(courseController.getPreSale);
+
 courseRouter.route("/:href")
     .get(authMiddleware, courseController.getOne)
     .delete(authMiddleware, isAdminMiddleware, courseController.remove);

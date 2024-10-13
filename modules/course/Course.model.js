@@ -29,6 +29,7 @@ const schema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
+        enum: ["preSale", "completed", "current"],
     },
     discount: {
         type: String,

@@ -26,6 +26,7 @@ const schema = {
     status: {
         type: "string",
         trim: true,
+        enum: ["preSale", "completed", "current"],
     },
     discount: {
         type: "string",

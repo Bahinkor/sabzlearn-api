@@ -55,29 +55,6 @@ exports.createCourse = async (req, res) => {
     }
 };
 
-exports.remove = async (req, res) => {
-    try {
-        const {href} = req.params;
-
-        const course = await courseModel.findOne({href});
-        if (!course) return res.status(404).json({message: "course not found"});
-
-        const {_id: userID} = req.user;
-        const teacherID = course.teacher;
-        if (!userID.equals(teacherID)) return res.status(403).json({message: "your not access this course"});
-
-        await courseModel.findOneAndDelete({href});
-
-        return res.json({
-            message: "course removed successfully",
-        });
-
-    } catch (err) {
-        console.log(`course controller remove err => ${err}`);
-        return res.status(500).json(err);
-    }
-};
-
 exports.getPopular = async (req, res) => {
     try {
         const popularCourse = await courseModel.aggregate([
@@ -111,6 +88,43 @@ exports.getPopular = async (req, res) => {
 
     } catch (err) {
         console.log(`course controller, get popular error => ${err}`);
+        return res.status(500).json(err);
+    }
+};
+
+exports.getPreSale = async (req, res) => {
+    try {
+        const preSaleCourses = await courseModel.find({
+            status: "preSale"
+        }).lean();
+
+        return res.json(preSaleCourses);
+
+    } catch (err) {
+        console.log(`course controller, get pre sale error => ${err}`);
+        return res.status(500).json(err);
+    }
+};
+
+exports.remove = async (req, res) => {
+    try {
+        const {href} = req.params;
+
+        const course = await courseModel.findOne({href});
+        if (!course) return res.status(404).json({message: "course not found"});
+
+        const {_id: userID} = req.user;
+        const teacherID = course.teacher;
+        if (!userID.equals(teacherID)) return res.status(403).json({message: "your not access this course"});
+
+        await courseModel.findOneAndDelete({href});
+
+        return res.json({
+            message: "course removed successfully",
+        });
+
+    } catch (err) {
+        console.log(`course controller remove err => ${err}`);
         return res.status(500).json(err);
     }
 };
