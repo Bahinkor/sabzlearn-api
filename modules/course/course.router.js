@@ -9,12 +9,12 @@ const courseRouter = express.Router();
 courseRouter.route("/")
     .post(authMiddleware, isAdminMiddleware, multerCoverUploader.single("cover"), courseController.createCourse);
 
+courseRouter.route("/popular")
+    .get(courseController.getPopular);
+
 courseRouter.route("/:href")
     .get(authMiddleware, courseController.getOne)
     .delete(authMiddleware, isAdminMiddleware, courseController.remove);
-
-courseRouter.route("/popular")
-    .get(courseController.getPopular);
 
 courseRouter.route("/related/:href")
     .get(courseController.getRelated);

@@ -80,7 +80,34 @@ exports.remove = async (req, res) => {
 
 exports.getPopular = async (req, res) => {
     try {
-        const popularCourse = await courseModel.find({});
+        const popularCourse = await courseModel.aggregate([
+            {
+                $lookup: {
+                    from: "CourseUser",
+                    localField: "_id",
+                    foreignField: "course",
+                    as: "StudentsCount",
+                },
+            },
+            {
+                $addFields: {
+                    StudentsCount: {$size: "$StudentsCount"}
+                },
+            },
+            {
+                $sort: {StudentsCount: -1}
+            },
+            {
+                $limit: 10,
+            },
+            {
+                $project: {
+                    StudentsCount: 0,
+                },
+            }
+        ]);
+
+        return res.json(popularCourse);
 
     } catch (err) {
         console.log(`course controller, get popular error => ${err}`);
