@@ -13,6 +13,7 @@ const replayRouter = require("./modules/replay/replay.router");
 const contactRouter = require("./modules/contact/contact.router");
 const newsLetterRouter = require("./modules/newsLetter/newsLetter.router");
 const searchRouter = require("./modules/search/search.router");
+const notificationRouter = require("./modules/notification/notification.router");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/v1/replay", replayRouter);
 app.use("/v1/contact", contactRouter);
 app.use("/v1/newsletter", newsLetterRouter);
 app.use("/v1/search", searchRouter);
+app.use("/v1/notification", notificationRouter);
 
 app.use((req, res) => {
     return res.status(404).json({
