@@ -11,6 +11,7 @@ const commentRouter = require("./modules/comment/comment.router");
 const userCourseRouter = require("./modules/userCourse/userCourse.router");
 const replayRouter = require("./modules/replay/replay.router");
 const contactRouter = require("./modules/contact/contact.router");
+const newsLetterRouter = require("./modules/newsLetter/NewsLetter.router");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/v1/comment", commentRouter);
 app.use("/v1/user-course", userCourseRouter);
 app.use("/v1/replay", replayRouter);
 app.use("/v1/contact", contactRouter);
+app.use("/v1/newsletter", newsLetterRouter);
 
 app.use((req, res) => {
     return res.status(404).json({
