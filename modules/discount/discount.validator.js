@@ -18,9 +18,6 @@ const schema = {
         type: "number",
         min: 1,
     },
-    creator: {
-        type: "string",
-    },
 
     $$strict: true,
 };

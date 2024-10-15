@@ -1,11 +1,42 @@
-const discountModel = require("./../discount/Discount.model");
-const courseModel = require("./../course/Course.model");
 const {isValidObjectId} = require("mongoose");
+const discountModel = require("./../discount/Discount.model");
+const discountValidator = require("./../discount/discount.validator");
+const courseModel = require("./../course/Course.model");
 
 exports.getAll = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
+    try {
+        const {_id: userID} = req.user;
+
+        const validationResult = discountValidator(req.body);
+        if (validationResult !== true) return res.status(422).json(validationResult);
+
+        const {code, max, percent, course: courseID} = req.body;
+
+        const isValidCourseID = isValidObjectId(courseID);
+        if (!isValidCourseID) return res.status(422).json({message: "Invalid Course"});
+
+        const course = await courseModel.findOne({_id: courseID});
+        if (!course) return res.status(404).json({message: "Course not found"});
+
+        await discountModel.create({
+            code,
+            percent,
+            max,
+            course: courseID,
+            creator: userID,
+        });
+
+        return res.status(201).json({
+            message: "discount created successfully"
+        });
+
+    } catch (err) {
+        console.log(`discount controller, create error => ${err}`);
+        return res.status(500).json(err);
+    }
 };
 
 exports.setOneAll = async (req, res) => {
