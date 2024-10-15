@@ -9,12 +9,13 @@ notificationRouter.use(authMiddleware);
 notificationRouter.use(isAdminMiddleware);
 
 notificationRouter.route("/")
-    .post(notificationController.create);
+    .post(notificationController.create)
+    .get(notificationController.getAll);
 
-notificationRouter.route("/:id")
+notificationRouter.route("/me")
     .get(notificationController.get);
 
-notificationRouter.route("/:id/seen")
+notificationRouter.route("/seen")
     .put(notificationController.seen);
 
 module.exports = notificationRouter;
