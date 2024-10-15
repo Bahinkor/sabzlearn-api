@@ -62,4 +62,27 @@ exports.get = async (req, res) => {
 };
 
 exports.seen = async (req, res) => {
+    try {
+        const {id: notificationID} = req.params;
+        const {_id: userID} = req.user;
+
+        const isValidNotificationID = isValidObjectId(notificationID);
+        if (!isValidNotificationID) return res.status(422).json({message: "invalid notificationID"});
+
+        const updatedNotification = await notificationModel.findOneAndUpdate({
+            _id: notificationID,
+            admin: userID,
+        }, {
+            isSeen: true,
+        });
+        if (!updatedNotification) return res.status(404).json({message: "notification not found"});
+
+        return res.json({
+            message: "notification was successfully seened",
+        });
+
+    } catch (err) {
+        console.log(`notification controller, seen error => ${err}`);
+        return res.status(500).json(err);
+    }
 };

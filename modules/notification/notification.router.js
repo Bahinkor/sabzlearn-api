@@ -15,7 +15,7 @@ notificationRouter.route("/")
 notificationRouter.route("/me")
     .get(notificationController.get);
 
-notificationRouter.route("/seen")
+notificationRouter.route("/:id/seen")
     .put(notificationController.seen);
 
 module.exports = notificationRouter;
