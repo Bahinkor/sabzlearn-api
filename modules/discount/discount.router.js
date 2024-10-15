@@ -10,7 +10,7 @@ discountRouter.route("/")
     .post(authMiddleware, isAdminMiddleware, discountController.create);
 
 discountRouter.route("/all")
-    .post(authMiddleware, isAdminMiddleware, discountController.setOneAll);
+    .put(authMiddleware, isAdminMiddleware, discountController.setOneAll);
 
 discountRouter.route("/:code")
     .get(authMiddleware, discountController.getOne);

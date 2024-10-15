@@ -32,7 +32,7 @@ const schema = new mongoose.Schema({
         enum: ["preSale", "completed", "current"],
     },
     discount: {
-        type: String,
+        type: Number,
         required: true,
     },
     categoryID: {
