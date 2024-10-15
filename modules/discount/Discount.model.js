@@ -23,7 +23,7 @@ const schema = new mongoose.Schema({
     },
     user: {
         type: Number,
-        required: true,
+        default: 0,
     },
     creator: {
         type: mongoose.Types.ObjectId,
