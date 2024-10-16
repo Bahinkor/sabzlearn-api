@@ -15,10 +15,12 @@ const newsLetterRouter = require("./modules/newsLetter/newsLetter.router");
 const searchRouter = require("./modules/search/search.router");
 const notificationRouter = require("./modules/notification/notification.router");
 const discountRouter = require("./modules/discount/discount.router");
+const articleRouter = require("./modules/article/article.router");
 
 const app = express();
 
 app.use("/courses/covers", express.static(path.join(__dirname, "/public", "courses", "covers")));
+app.use("/articles/covers", express.static(path.join(__dirname, "/public", "articles", "covers")));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -37,6 +39,7 @@ app.use("/v1/newsletter", newsLetterRouter);
 app.use("/v1/search", searchRouter);
 app.use("/v1/notification", notificationRouter);
 app.use("/v1/discount", discountRouter);
+app.use("/v1/article", articleRouter);
 
 app.use((req, res) => {
     return res.status(404).json({
