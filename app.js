@@ -16,6 +16,7 @@ const searchRouter = require("./modules/search/search.router");
 const notificationRouter = require("./modules/notification/notification.router");
 const discountRouter = require("./modules/discount/discount.router");
 const articleRouter = require("./modules/article/article.router");
+const orderRouter = require("./modules/order/order.router");
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/v1/search", searchRouter);
 app.use("/v1/notification", notificationRouter);
 app.use("/v1/discount", discountRouter);
 app.use("/v1/article", articleRouter);
+app.use("/v1/order", orderRouter);
 
 app.use((req, res) => {
     return res.status(404).json({
