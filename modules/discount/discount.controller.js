@@ -4,6 +4,16 @@ const discountValidator = require("./../discount/discount.validator");
 const courseModel = require("./../course/Course.model");
 
 exports.getAll = async (req, res) => {
+    try {
+        const discounts = await discountModel.find({}, "-__v")
+            .populate("course", "title href").populate("creator", "name").lean();
+
+        return res.json(discounts);
+
+    } catch (err) {
+        console.log(`discount controller, get all error => ${err}`);
+        return res.status(500).json(err);
+    }
 };
 
 exports.create = async (req, res) => {

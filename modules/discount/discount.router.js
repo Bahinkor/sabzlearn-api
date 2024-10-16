@@ -5,17 +5,19 @@ const isAdminMiddleware = require("./../../middlewares/isAdmin.middleware");
 
 const discountRouter = express.Router();
 
+discountRouter.use(authMiddleware);
+
 discountRouter.route("/")
-    .get(authMiddleware, isAdminMiddleware, discountController.getAll)
-    .post(authMiddleware, isAdminMiddleware, discountController.create);
+    .get(isAdminMiddleware, discountController.getAll)
+    .post(isAdminMiddleware, discountController.create);
 
 discountRouter.route("/all")
-    .put(authMiddleware, isAdminMiddleware, discountController.setOneAll);
+    .put(isAdminMiddleware, discountController.setOneAll);
 
 discountRouter.route("/:code")
-    .get(authMiddleware, discountController.getOne);
+    .get(discountController.getOne);
 
 discountRouter.route("/:id")
-    .delete(authMiddleware, isAdminMiddleware, discountController.remove);
+    .delete(isAdminMiddleware, discountController.remove);
 
 module.exports = discountRouter;
