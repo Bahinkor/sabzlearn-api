@@ -70,6 +70,32 @@ exports.setOneAll = async (req, res) => {
 };
 
 exports.getOne = async (req, res) => {
+    try {
+        const {code, course} = req.body;
+
+        const isValidCourseID = isValidObjectId(course);
+        if (!isValidCourseID) return res.status(422).json({message: "course id is not valid"});
+
+        const discount = await discountModel.findOne({
+            code,
+            course,
+        });
+        if (!discount) return res.status(404).json({message: "discount not found"});
+
+        if (discount.user >= discount.max) return res.status(409).json({message: "The discount has expired"});
+
+        await discountModel.findOneAndUpdate({
+            _id: discount._id
+        }, {
+            user: discount.user + 1,
+        });
+
+        return res.json(discount);
+
+    } catch (err) {
+        console.log(`discount controller, getOne err => ${err}`);
+        return res.status(500).json(err);
+    }
 };
 
 exports.remove = async (req, res) => {

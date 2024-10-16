@@ -14,8 +14,8 @@ discountRouter.route("/")
 discountRouter.route("/all")
     .put(isAdminMiddleware, discountController.setOneAll);
 
-discountRouter.route("/:code")
-    .get(discountController.getOne);
+discountRouter.route("/use")
+    .post(discountController.getOne);
 
 discountRouter.route("/:id")
     .delete(isAdminMiddleware, discountController.remove);
